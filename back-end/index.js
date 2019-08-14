@@ -28,6 +28,7 @@ app.get('/', (req,res) => {
 	res.send('go to /products to see products')
 });
 
+
 app.get('/products/add', (req,res) => {
 	const { product_name, sku, price, is_active } = req.query;
 	const INSERT_PRODUCT_INTO_DB = `INSERT INTO hot_dog.products (product_name, sku, price, is_active) VALUES('${product_name}', '${sku}', '${price}', '${is_active}')`;
@@ -57,17 +58,16 @@ app.get('/products/add', (req,res) => {
         return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
     });
 }); */
-app.delete('/products/delete/:id*?', function(req, res) =>{
-
-	let { id } = req.query;
-    console.log("id: ", req.query);
-	let DELETE_PRODUCT_FROM_DB = `DELETE FROM hot_dog.products WHERE hot_dog.id= '${req.query}'`;
-    console.log("id: ", req.query);
+app.delete('/products/delete/:id*?', (req, res) => {
+  let { id } = req.query;
+  console.log('id: ', req.query);
+  let DELETE_PRODUCT_FROM_DB = `DELETE FROM hot_dog.products WHERE id= '${id}'`;
+  console.log('id: ', req.query);
   // delete a row with id = req.params.id
-  	connection.query(DELETE_PRODUCT_FROM_DB, (error, results, fields) => {
-  		if (error) return console.error(error.message);
+  connection.query(DELETE_PRODUCT_FROM_DB, (error, results, fields) => {
+    if (error) return console.error(error.message);
     res.status(200).send(results);
-    console.log("Deleted Row(s):", results.affectedRows);
+    console.log('Deleted Row(s):', results.affectedRows);
   });
 });
 
