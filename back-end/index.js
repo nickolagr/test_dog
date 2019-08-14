@@ -60,7 +60,6 @@ app.get('/products/add', (req,res) => {
 }); */
 app.delete('/products/delete/:id*?', (req, res) => {
   let { id } = req.query;
-  console.log('id: ', req.query);
   let DELETE_PRODUCT_FROM_DB = `DELETE FROM hot_dog.products WHERE id= '${id}'`;
   console.log('id: ', req.query);
   // delete a row with id = req.params.id
