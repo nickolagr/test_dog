@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+
 class App extends Component {
   state = {
     products: [],
     product: {
       product_name: '',
-      sku:''
+      sku:'',
+      id:''
     }
   }
 
@@ -37,7 +39,7 @@ class App extends Component {
   }
 
 //custom code
-  deleteProduct = _ => {
+/*  deleteProduct = _ => {
     const {product} = this.state;
     fetch(`http://localhost:4000/products}`)
    
@@ -45,11 +47,21 @@ class App extends Component {
     
     .catch(err => console.error(err))
 
+  }*/
+deleteProduct = _ => {
+    // <-- declare id parameter
+    const {product} = this.state;
+    fetch(`http://localhost:4000/products/delete/${product.id}`)
+   
+    .then(console.log(product.id))
+    .catch(err => console.error(err))
+
   }
+
 //end
 
-  renderProduct = ({id, product_id, product_name, sku}) => 
-  <div key={product_id}>{product_name} {sku} 
+  renderProduct = ({id, product_name, sku}) => 
+  <div key={id}>{id}  {product_name} {sku} 
 
   <button onClick={this.deleteProduct}>deleteProduct</button>
 

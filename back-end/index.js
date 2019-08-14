@@ -45,7 +45,7 @@ app.get('/products/add', (req,res) => {
 
 //rest api to delete record from mysql database
 //  Delete user
-app.delete('/products', function (req, res) {
+/*app.delete('/products', function (req, res) {
   
     let id = req.body.id;
   
@@ -56,8 +56,24 @@ app.delete('/products', function (req, res) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
     });
-}); 
+}); */
+app.delete('/products/delete/:id*?', function(req, res) =>{
+
+	let { id } = req.query;
+    console.log("id: ", req.query);
+	let DELETE_PRODUCT_FROM_DB = `DELETE FROM hot_dog.products WHERE hot_dog.id= '${req.query}'`;
+    console.log("id: ", req.query);
+  // delete a row with id = req.params.id
+  	connection.query(DELETE_PRODUCT_FROM_DB, (error, results, fields) => {
+  		if (error) return console.error(error.message);
+    res.status(200).send(results);
+    console.log("Deleted Row(s):", results.affectedRows);
+  });
+});
+
+
 //custom code here
+
 
 app.get('/products', (req,res) => {
 	connection.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {
