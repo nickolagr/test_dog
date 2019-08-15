@@ -29,6 +29,7 @@ app.get('/', (req,res) => {
 });
 
 
+
 app.get('/products/add', (req,res) => {
 	const { product_name, sku, price, is_active } = req.query;
 	const INSERT_PRODUCT_INTO_DB = `INSERT INTO hot_dog.products (product_name, sku, price, is_active) VALUES('${product_name}', '${sku}', '${price}', '${is_active}')`;
@@ -45,24 +46,11 @@ app.get('/products/add', (req,res) => {
 });
 
 //rest api to delete record from mysql database
-//  Delete user
-/*app.delete('/products', function (req, res) {
-  
-    let id = req.body.id;
-  
-    if (!id) {
-        return res.status(400).send({ error: true, message: 'Please provide id' });
-    }
-    connection.query('DELETE FROM hot_dog.products WHERE hot_dog.id=?', [id], function (error, results, fields) {
-        if (error) throw error;
-        return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
-    });
-}); */
-app.delete('/products/delete/:id*?', (req, res) => {
-  let { id } = req.query ;
-  console.log('id: ', req.query);
+
+app.delete('/products/delete/:id', (req, res) => {
+  let { id } = req.params ;
   let DELETE_PRODUCT_FROM_DB = `DELETE FROM hot_dog.products WHERE id= '${id}'`;
-  console.log('id: ', req.query);
+  console.log('id: ', req.params);
   // delete a row with id = req.params.id
   connection.query(DELETE_PRODUCT_FROM_DB, (error, results, fields) => {
     if (error) return console.error(error.message);
@@ -71,8 +59,23 @@ app.delete('/products/delete/:id*?', (req, res) => {
   });
 });
 
-//custom code here
+//edit item
 
+app.post('/products/update/:id', (req,res) => {
+	const { product_name, sku, price, is_active } = req.query;
+	let { id } = req.params ;
+	const UPDATE_PRODUCT_INTO_DB = `UPDATE hot_dog.products SET product_name='${product_name}', sku='${sku}', price='${price}', is_active='${is_active}' WHERE id= '${id}'`;
+	connection.query(UPDATE_PRODUCT_INTO_DB, (err, results) => {
+		if(err){
+			return res.send(err)
+		}
+		else{
+			return res.send('successfully edited product')
+		}
+
+	});
+
+});
 
 app.get('/products', (req,res) => {
 	connection.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {

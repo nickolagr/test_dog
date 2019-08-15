@@ -11,6 +11,7 @@ class App extends Component {
       sku:'',
       id:''
     }
+   
   }
 
   componentDidMount(){
@@ -39,31 +40,37 @@ class App extends Component {
   }
 
 //custom code
-/*  deleteProduct = _ => {
-    const {product} = this.state;
-    fetch(`http://localhost:4000/products}`)
-   
-    .then(this.getProducts)
-    
-    .catch(err => console.error(err))
 
-  }*/
-deleteProduct = _ => {
+deleteProduct = id => {
     // <-- declare id parameter
     const {product} = this.state;
-    fetch(`http://localhost:4000/products/delete/${product.id}`)
-   
-    .then(console.log(product.id))
+   fetch(`http://localhost:4000/products/delete/` + id, 
+      {method: 'delete'})
+    .then(response => response.json())
+    .then(this.getProducts)
     .catch(err => console.error(err))
 
   }
 
-//end
+editProduct = id => {
+    // <-- declare id parameter
 
+    const {product} = this.state;
+   fetch(`http://localhost:4000/products/update/` + id + `?product_name=${product.product_name}&sku=${product.sku}`, 
+      {method: 'post'})
+    .then(response => response.json())
+    .then(this.getProducts)
+    .catch(err => console.error(err))
+
+  }
+//end
+  /*here need to handle changes with edit Product*/
   renderProduct = ({id, product_name, sku}) => 
   <div key={id}>{id}  {product_name} {sku} 
-
-  <button onClick={this.deleteProduct}>deleteProduct</button>
+//edit button need fixes
+//<button onClick={() => {this.editProduct(id)}}>editProduct</button>&nbsp;&nbsp;&nbsp; 
+  
+  <button onClick={() => {this.deleteProduct(id)}}>deleteProduct</button>
 
   </div>
 
